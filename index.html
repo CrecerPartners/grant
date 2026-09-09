@@ -1058,5 +1058,109 @@ title="Business Growth Grant Application Form"
             </p>
         </div>
     </footer>
+
+    <!-- ANIMATION SYSTEM -->
+    <style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-fade-in {
+            animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-0 { animation-delay: 0ms; transition-delay: 0ms; }
+        .delay-100 { animation-delay: 100ms; transition-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; transition-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; transition-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Hero Animations (Run immediately)
+            const heroContent = document.querySelector('.lg\\:col-span-7');
+            if (heroContent) {
+                Array.from(heroContent.children).forEach((child, index) => {
+                    // Skip script/style/comment nodes if any
+                    if(child.tagName) {
+                        child.classList.add('hero-fade-in');
+                        child.classList.add('delay-' + (index * 100));
+                    }
+                });
+            }
+            
+            const heroRight = document.querySelector('.lg\\:col-span-5');
+            if (heroRight) {
+                heroRight.classList.add('hero-fade-in', 'delay-400');
+            }
+
+            // 2. Scroll Reveal Animations (Run on scroll)
+            // Section Headers
+            document.querySelectorAll('section h2, section h3, section p.max-w-2xl, section p.max-w-3xl, section .bg-brand-pale').forEach(el => {
+                if (!el.classList.contains('hero-fade-in')) el.classList.add('reveal');
+            });
+            
+            // Grid Items (Leaking Money, Eligibility, etc.)
+            document.querySelectorAll('section .grid:not(.grid-cols-12)').forEach(grid => {
+                Array.from(grid.children).forEach((child, index) => {
+                    if(child.tagName) {
+                        child.classList.add('reveal');
+                        child.classList.add('delay-' + ((index % 5 + 1) * 100));
+                    }
+                });
+            });
+
+            // Value Table Rows
+            const valueTable = document.querySelector('.divide-y');
+            if (valueTable) {
+                Array.from(valueTable.children).forEach((row, index) => {
+                    if(row.tagName) {
+                        row.classList.add('reveal');
+                        row.classList.add('delay-' + ((index % 5 + 1) * 100));
+                    }
+                });
+            }
+
+            // Trust Footer Cards
+            const footerGrid = document.querySelector('footer .grid');
+            if (footerGrid) {
+                Array.from(footerGrid.children).forEach((child, index) => {
+                    if(child.tagName) {
+                        child.classList.add('reveal');
+                        child.classList.add('delay-' + ((index % 3 + 1) * 100));
+                    }
+                });
+            }
+            
+            // Total Value Box & Action Boxes
+            document.querySelectorAll('.bg-gradient-to-br.from-brand-navy, .bg-white.rounded-3xl.shadow-xl, .btn-primary').forEach(el => {
+                el.classList.add('reveal');
+            });
+
+            // 3. Initialize Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            
+            document.querySelectorAll(".reveal").forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
